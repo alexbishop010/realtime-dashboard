@@ -37,7 +37,7 @@ const S = {
   // Adobe red
   adobeRed: '#fa0f00',
 
-  fontSans: 'system-ui, -apple-system, sans-serif',
+  fontSans: '"Source Sans 3", system-ui, sans-serif',
 };
 
 const METRICS = [
