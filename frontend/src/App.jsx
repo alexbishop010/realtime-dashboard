@@ -174,6 +174,7 @@ export default function App() {
   const [filters, setFilters]         = useState({});
   const [filterOpen, setFilterOpen]   = useState(null);
   const [, forceRender]               = useState(0);
+  const [simulating, setSimulating] = useState(false);
 
   const eventsRef = useRef([]);
 
@@ -198,6 +199,14 @@ export default function App() {
     };
     return () => es.close();
   }, [ingestEvents]);
+
+  // Check simulation status on load  ← add here
+    useEffect(() => {
+      fetch(`${API}/simulate/status`)
+        .then(r => r.json())
+        .then(d => setSimulating(d.running))
+        .catch(() => {});
+    }, []);
 
   const dimValues = useMemo(() => {
     const map = {};
@@ -260,6 +269,16 @@ export default function App() {
 
   function clearFilters() { setFilters({}); }
 
+    async function startSim() {
+    await fetch(`${API}/simulate/start`, { method: 'POST' });
+    setSimulating(true);
+  }
+
+  async function stopSim() {
+    await fetch(`${API}/simulate/stop`, { method: 'POST' });
+    setSimulating(false);
+  }
+
   return (
     <div style={{ fontFamily: S.fontSans, background: S.gray100, minHeight: '100vh', color: S.gray900 }}>
 
@@ -285,10 +304,36 @@ export default function App() {
         </span>
         <div style={{ flex: 1 }} />
         {/* Live indicator */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button
+          onClick={simulating ? stopSim : startSim}
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            padding: '6px 14px',
+            borderRadius: 16,
+            cursor: 'pointer',
+            border: 'none',
+            background: simulating ? S.red500 : S.blue600,
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            transition: 'background 0.15s',
+          }}>
+          <span style={{
+            width: 7, height: 7, borderRadius: '50%',
+            background: '#fff',
+            animation: simulating ? 'pulse 1s infinite' : 'none',
+          }} />
+          {simulating ? 'Stop simulation' : 'Simulate traffic'}
+        </button>
+
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          fontSize: S.fontSize75, color: connected ? '#33ab84' : S.red500,
-          fontWeight: S.fontWeightMedium,
+          display: 'flex', alignItems: 'center', gap: 6, fontSize: 13,
+          padding: '4px 10px', borderRadius: 20,
+          background: connected ? '#E1F5EE' : '#FEE2E2',
+          color: connected ? '#0F6E56' : '#991B1B',
         }}>
           <span style={{
             width: 7, height: 7, borderRadius: '50%',
@@ -297,6 +342,8 @@ export default function App() {
           }} />
           {connected ? 'Live' : 'Disconnected'}
         </div>
+      </div>
+        
       </div>
 
       {/* ── Page header ── */}

@@ -1,7 +1,7 @@
 cat > ~/simulate-events.sh << 'EOF'
 #!/bin/bash
 
-ENDPOINT="https://4ae3-130-248-63-10.ngrok-free.app/webhook"
+ENDPOINT="https://realtime-dashboard-backend-947o.onrender.com/webhook"
 SECRET="abc123"
 
 PAGES=(
