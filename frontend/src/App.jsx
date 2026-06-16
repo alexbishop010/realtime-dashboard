@@ -330,8 +330,8 @@ export default function App() {
             {METRICS.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)} style={{
                 textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
-                background: selectedMetric === m.key ? m.bg : '#1b1b1b',
-                border: selectedMetric === m.key ? `0.5px solid ${m.color}88` : `0.5px solid ${S.border2}`,
+                background: selectedMetric === m.key ? '#000000' : '#1b1b1b',
+                border: selectedMetric === m.key ? `1px solid ${m.color}` : `0.5px solid rgba(255,255,255,0.1)`,
                 backdropFilter: 'blur(8px)',
                 WebkitBackdropFilter: 'blur(8px)',
                 fontFamily: S.fontSans,
