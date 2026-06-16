@@ -324,7 +324,7 @@ export default function App() {
         <div style={{ padding: '20px 24px', maxWidth: 1280, margin: '0 auto' }}>
 
           {/* Metric cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: 10, marginBottom: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 14 }}>
             {METRICS.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)} style={{
                 textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
