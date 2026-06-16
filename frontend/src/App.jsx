@@ -189,16 +189,38 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const es = new EventSource(`${API}/events/stream`);
-    es.onopen  = () => setConnected(true);
-    es.onerror = () => setConnected(false);
+  let es;
+  let retryTimeout;
+  let retryDelay = 3000;
+
+  function connect() {
+    es = new EventSource(`${API}/events/stream`);
+    es.onopen = () => {
+      setConnected(true);
+      retryDelay = 3000; // reset delay on successful connection
+    };
+    es.onerror = () => {
+      setConnected(false);
+      es.close();
+      retryTimeout = setTimeout(() => {
+        retryDelay = Math.min(retryDelay * 2, 30000); // backoff up to 30s
+        connect();
+      }, retryDelay);
+    };
     es.onmessage = (e) => {
       const msg = JSON.parse(e.data);
       if (msg.type === 'history') ingestEvents(msg.events);
       else ingestEvents([msg]);
     };
-    return () => es.close();
-  }, [ingestEvents]);
+  }
+
+  connect();
+
+  return () => {
+    clearTimeout(retryTimeout);
+    es?.close();
+  };
+}, [ingestEvents]);
 
   // Check simulation status on load  ← add here
     useEffect(() => {

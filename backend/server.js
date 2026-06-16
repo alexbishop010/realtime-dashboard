@@ -109,6 +109,102 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', events: events.length, clients: sseClients.size });
 });
 
+// Simulate traffic
+const SIM_PAGES = [
+  { name: 'Home',                 url: 'https://example.com/' },
+  { name: 'Product: Shoes',       url: 'https://example.com/products/shoes' },
+  { name: 'Product: Bags',        url: 'https://example.com/products/bags' },
+  { name: 'Product: Hats',        url: 'https://example.com/products/hats' },
+  { name: 'Product: Jackets',     url: 'https://example.com/products/jackets' },
+  { name: 'Blog: Trends',         url: 'https://example.com/blog/trends' },
+  { name: 'Checkout',             url: 'https://example.com/checkout' },
+  { name: 'Cart',                 url: 'https://example.com/cart' },
+  { name: 'Order Confirmation',   url: 'https://example.com/order-confirmation' },
+  { name: 'Search',               url: 'https://example.com/search' },
+  { name: 'Category: Sale',       url: 'https://example.com/sale' },
+  { name: 'Category: Men',        url: 'https://example.com/men' },
+  { name: 'Category: Women',      url: 'https://example.com/women' },
+];
+
+const WEIGHTED_PAGES = [
+  ...Array(5).fill(SIM_PAGES[0]),
+  ...Array(3).fill(SIM_PAGES[1]),
+  ...Array(2).fill(SIM_PAGES[2]),
+  ...Array(2).fill(SIM_PAGES[3]),
+  ...Array(2).fill(SIM_PAGES[4]),
+  ...Array(2).fill(SIM_PAGES[5]),
+  ...Array(3).fill(SIM_PAGES[6]),
+  ...Array(3).fill(SIM_PAGES[7]),
+  SIM_PAGES[8], SIM_PAGES[9], SIM_PAGES[10], SIM_PAGES[11], SIM_PAGES[12],
+];
+
+const SIM_DEVICES   = ['browser', 'browser', 'browser', 'mobile', 'mobile', 'tablet'];
+const SIM_COUNTRIES = ['US','US','US','GB','GB','DE','FR','CA','AU','NL','ES','IT'];
+const SIM_TRACKING  = [
+  'email_spring_sale', 'email_new_arrivals', 'social_instagram',
+  'social_tiktok', 'paid_google_brand', 'paid_google_generic',
+  'paid_meta', 'affiliate_partner1', 'direct', 'direct', 'direct',
+];
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateSimEvent() {
+  const page      = pick(WEIGHTED_PAGES);
+  const device    = pick(SIM_DEVICES);
+  const country   = pick(SIM_COUNTRIES);
+  const tracking  = pick(SIM_TRACKING);
+  const isProduct = page.name.startsWith('Product');
+  const isCart    = page.name === 'Cart';
+  const isCheckout = page.name === 'Checkout';
+  const isConfirm  = page.name === 'Order Confirmation';
+  const addToCart  = isCart ? 1 : 0;
+  const purchase   = isConfirm ? 1 : (isCheckout && Math.random() < 0.25 ? 1 : 0);
+
+  return {
+    id:        crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    pageName:  page.name,
+    pageUrl:   page.url,
+    deviceType: device,
+    country,
+    trackingCode: tracking,
+    pageView:        1,
+    productPageView: isProduct ? 1 : 0,
+    addToCart,
+    purchase,
+  };
+}
+
+let simInterval = null;
+
+app.post('/simulate/start', (req, res) => {
+  if (simInterval) return res.json({ status: 'already running' });
+
+  simInterval = setInterval(() => {
+    const count = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < count; i++) {
+      const evt = generateSimEvent();
+      events.push(evt);
+      if (events.length > MAX_EVENTS) events.shift();
+      broadcast(evt);
+    }
+  }, 800);
+
+  res.json({ status: 'started' });
+});
+
+app.post('/simulate/stop', (_req, res) => {
+  if (simInterval) {
+    clearInterval(simInterval);
+    simInterval = null;
+  }
+  res.json({ status: 'stopped' });
+});
+
+app.get('/simulate/status', (_req, res) => {
+  res.json({ running: simInterval !== null });
+});
+
 app.listen(PORT, () => {
   console.log(`AEP webhook server listening on :${PORT}`);
   console.log(`Auth: ${WEBHOOK_SECRET ? 'enabled' : 'disabled (set WEBHOOK_SECRET to enable)'}`);
