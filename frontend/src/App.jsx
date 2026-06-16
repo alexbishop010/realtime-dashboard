@@ -7,13 +7,13 @@ const S = {
   bg0:  '#0a0a0a',
   bg1:  '#0f0f0f',
   bg2:  '#141414',
-  bg3:  'rgba(15,10,30,0.65)',
+  bg3:  '#1b1b1b',
   bg4:  'rgba(15,10,30,0.45)',
 
   border1: 'rgba(255,255,255,0.06)',
   border2: 'rgba(255,255,255,0.1)',
 
-  textPrimary:   '#e8e8e8',
+  textPrimary:   '#dbdbdb',
   textSecondary: '#a0a0c0',
   textMuted:     '#6b6b9a',
 
@@ -330,7 +330,7 @@ export default function App() {
             {METRICS.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)} style={{
                 textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
-                background: selectedMetric === m.key ? m.bg : 'rgba(15,10,30,0.5)',
+                background: selectedMetric === m.key ? m.bg : '#1b1b1b',
                 border: selectedMetric === m.key ? `0.5px solid ${m.color}88` : `0.5px solid ${S.border2}`,
                 backdropFilter: 'blur(8px)',
                 WebkitBackdropFilter: 'blur(8px)',
