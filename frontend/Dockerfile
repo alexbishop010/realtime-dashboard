@@ -11,6 +11,7 @@ COPY src ./src
 COPY public ./public
 
 RUN npm run build
+RUN ls dist/
 
 # ── Stage 2: serve via nginx ───────────────────────────────────────────────────
 FROM nginx:alpine
