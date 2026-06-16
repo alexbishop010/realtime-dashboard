@@ -324,7 +324,7 @@ export default function App() {
         <div style={{ padding: '20px 24px', maxWidth: 1280, margin: '0 auto' }}>
 
           {/* Metric cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 14 }}>
+          <div className="metric-grid">
             {METRICS.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)} style={{
                 textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
@@ -588,17 +588,19 @@ export default function App() {
       </div>
 
       <style>{`
-        * { box-sizing: border-box; }
-        body { margin: 0; background: ${S.bg2}; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-        button { outline: none; }
-        button:focus-visible { box-shadow: 0 0 0 3px rgba(79,70,229,0.4); }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
-        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        @media (max-width: 768px) { .bottom-grid { grid-template-columns: 1fr; } }
-      `}</style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: ${S.bg2}; }
+      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+      button { outline: none; }
+      button:focus-visible { box-shadow: 0 0 0 3px rgba(79,70,229,0.4); }
+      ::-webkit-scrollbar { width: 5px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+      .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 768px) { .bottom-grid { grid-template-columns: 1fr; } }
+      .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+      @media (max-width: 768px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } }
+    `}</style>
     </div>
   );
 }
