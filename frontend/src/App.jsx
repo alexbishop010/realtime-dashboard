@@ -304,18 +304,6 @@ export default function App() {
         </span>
         <div style={{ flex: 1 }} />
         {/* Live indicator */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          fontSize: S.fontSize75, color: connected ? '#33ab84' : S.red500,
-          fontWeight: S.fontWeightMedium,
-        }}>
-          <span style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: connected ? S.green500 : S.red500,
-            animation: connected ? 'pulse 1.5s infinite' : 'none',
-          }} />
-          {connected ? 'Live' : 'Disconnected'}
-        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <button
           onClick={simulating ? stopSim : startSim}
