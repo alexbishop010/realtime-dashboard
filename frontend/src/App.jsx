@@ -8,7 +8,7 @@ const S = {
   bg1:  '#0f0f0f',
   bg2:  '#141414',
   bg3:  '#1b1b1b',
-  bg4:  'rgba(15,10,30,0.45)',
+  bg4:  '#1b1b1b',
 
   border1: 'rgba(255,255,255,0.06)',
   border2: 'rgba(255,255,255,0.1)',
@@ -73,8 +73,6 @@ function Panel({ children, style = {} }) {
       border: `0.5px solid ${S.border2}`,
       borderRadius: 8,
       padding: '14px 16px',
-      backdropFilter: 'blur(8px)',
-      WebkitBackdropFilter: 'blur(8px)',
       ...style,
     }}>
       {children}
@@ -332,8 +330,8 @@ export default function App() {
                 textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
                 background: selectedMetric === m.key ? '#000000' : '#1b1b1b',
                 border: selectedMetric === m.key ? `1px solid ${m.color}` : `0.5px solid rgba(255,255,255,0.1)`,
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
                 fontFamily: S.fontSans,
                 transition: 'all 0.12s',
               }}>
@@ -493,7 +491,7 @@ export default function App() {
           </Panel>
 
           {/* Bottom row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="bottom-grid">
 
             {/* Top 10 dimension table */}
             <Panel>
@@ -598,6 +596,8 @@ export default function App() {
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 768px) { .bottom-grid { grid-template-columns: 1fr; } }
       `}</style>
     </div>
   );
