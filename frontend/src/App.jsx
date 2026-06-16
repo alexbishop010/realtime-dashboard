@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-const [simulating, setSimulating] = useState(false);
+
 const API = import.meta.env.VITE_API_URL || '';
 
 // ── Spectrum 2 design tokens ───────────────────────────────────────────────────
@@ -174,6 +174,7 @@ export default function App() {
   const [filters, setFilters]         = useState({});
   const [filterOpen, setFilterOpen]   = useState(null);
   const [, forceRender]               = useState(0);
+  const [simulating, setSimulating] = useState(false);
 
   const eventsRef = useRef([]);
 
