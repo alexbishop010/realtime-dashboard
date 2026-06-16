@@ -3,78 +3,56 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const API = import.meta.env.VITE_API_URL || '';
 
-// ── Spectrum 2 design tokens ───────────────────────────────────────────────────
 const S = {
-  // Gray scale (Spectrum global)
-  gray50:  '#ffffff',
-  gray75:  '#fafafa',
-  gray100: '#f5f5f5',
-  gray200: '#eaeaea',
-  gray300: '#e0e0e0',
-  gray400: '#c8c8c8',
-  gray500: '#adadad',
-  gray600: '#868686',
-  gray700: '#6f6f6f',
-  gray800: '#444444',
-  gray900: '#1a1a1a',
+  // Dark backgrounds
+  bg0:  '#0a0a0a',
+  bg1:  '#0f0f0f',
+  bg2:  '#141414',
+  bg3:  '#1a1a1a',
+  bg4:  '#1f1f1f',
 
-  // Accent / Blue (Spectrum blue ramp)
-  blue400: '#5aa8ff',
-  blue500: '#378ef0',
-  blue600: '#147af3',
-  blue700: '#0d66d0',
+  // Borders
+  border1: '#222222',
+  border2: '#2a2a2a',
 
-  // Semantic
-  red500:   '#ec5b62',
-  green500: '#33ab84',
-  orange500:'#f29423',
-  purple500:'#9d6bf5',
+  // Text
+  textPrimary:   '#e8e8e8',
+  textSecondary: '#888888',
+  textMuted:     '#555555',
 
-  // Adobe red (brand)
+  // Purple (primary accent — from screenshot)
+  purple50:  '#2a1f3d',
+  purple100: '#3b2d57',
+  purple400: '#7c3aed',
+  purple500: '#4f46e5',
+  purple600: '#a98eff',
+  purple700: '#c4b5fd',
+
+  // Semantic metric colors
+  blue:   '#4f46e5',
+  green:  '#1D9E75',
+  orange: '#BA7517',
+  purple: '#9d6bf5',
+
+  // Adobe red
   adobeRed: '#fa0f00',
 
-  // Spacing
-  sp50:  '4px',
-  sp75:  '6px',
-  sp100: '8px',
-  sp150: '12px',
-  sp200: '16px',
-  sp300: '24px',
-  sp400: '32px',
-
-  // Corner radius
-  radius75:  '4px',
-  radius100: '8px',
-  radius200: '16px',
-
-  // Typography
-  fontSans: '"Adobe Clean", "Source Sans Pro", ui-sans-serif, system-ui, sans-serif',
-  fontSize75:  '11px',
-  fontSize100: '14px',
-  fontSize200: '16px',
-  fontSize300: '18px',
-  fontSize400: '20px',
-  fontSize500: '22px',
-  fontSize600: '25px',
-  fontSize700: '28px',
-  fontWeightRegular: 400,
-  fontWeightMedium:  500,
-  fontWeightBold:    700,
+  fontSans: 'system-ui, -apple-system, sans-serif',
 };
 
 const METRICS = [
-  { key: 'pageView',        label: 'Page Views',    color: S.blue600,   bg: '#e8f3ff' },
-  { key: 'productPageView', label: 'Product Views', color: S.green500,  bg: '#e6f6f1' },
-  { key: 'addToCart',       label: 'Add to Cart',   color: S.orange500, bg: '#fef3e3' },
-  { key: 'purchase',        label: 'Purchases',     color: S.purple500, bg: '#f2edff' },
+  { key: 'pageView',        label: 'Page Views',    color: S.blue,   bg: '#1a1830' },
+  { key: 'productPageView', label: 'Product Views', color: S.green,  bg: '#0d2e1f' },
+  { key: 'addToCart',       label: 'Add to Cart',   color: S.orange, bg: '#2a1f00' },
+  { key: 'purchase',        label: 'Purchases',     color: S.purple, bg: '#1e1030' },
 ];
 
 const DIMS = [
-  { key: 'pageName',     label: 'Page name'     },
-  { key: 'pageUrl',      label: 'Page URL'       },
-  { key: 'deviceType',   label: 'Device'         },
-  { key: 'country',      label: 'Country'        },
-  { key: 'trackingCode', label: 'Tracking code'  },
+  { key: 'pageName',     label: 'Page name'    },
+  { key: 'pageUrl',      label: 'Page URL'     },
+  { key: 'deviceType',   label: 'Device'       },
+  { key: 'country',      label: 'Country'      },
+  { key: 'trackingCode', label: 'Tracking code'},
 ];
 
 const BUCKET_MS = 60_000;
@@ -93,15 +71,13 @@ function eventMatchesFilters(evt, filters) {
   });
 }
 
-// ── Spectrum UI primitives ────────────────────────────────────────────────────
-
 function Panel({ children, style = {} }) {
   return (
     <div style={{
-      background: S.gray50,
-      border: `1px solid ${S.gray200}`,
-      borderRadius: S.radius100,
-      padding: S.sp300,
+      background: S.bg3,
+      border: `0.5px solid ${S.border2}`,
+      borderRadius: 8,
+      padding: '14px 16px',
       ...style,
     }}>
       {children}
@@ -112,60 +88,18 @@ function Panel({ children, style = {} }) {
 function SectionLabel({ children }) {
   return (
     <div style={{
-      fontSize: S.fontSize75,
-      fontWeight: S.fontWeightBold,
-      color: S.gray600,
+      fontSize: 11,
+      fontWeight: 600,
+      color: S.textMuted,
       textTransform: 'uppercase',
       letterSpacing: '0.06em',
-      marginBottom: S.sp150,
+      marginBottom: 4,
     }}>
       {children}
     </div>
   );
 }
 
-function ActionButton({ active, onClick, children, style = {} }) {
-  return (
-    <button onClick={onClick} style={{
-      fontSize: S.fontSize75,
-      fontWeight: active ? S.fontWeightMedium : S.fontWeightRegular,
-      padding: '4px 10px',
-      borderRadius: '16px',
-      cursor: 'pointer',
-      background: active ? S.blue700 : 'transparent',
-      color: active ? S.gray50 : S.gray700,
-      border: `1px solid ${active ? S.blue700 : S.gray300}`,
-      transition: 'all 0.12s',
-      whiteSpace: 'nowrap',
-      ...style,
-    }}>
-      {children}
-    </button>
-  );
-}
-
-function SpectrumSelect({ value, onChange, children }) {
-  return (
-    <select value={value} onChange={onChange} style={{
-      fontSize: S.fontSize75,
-      padding: '5px 28px 5px 10px',
-      borderRadius: S.radius75,
-      border: `1px solid ${S.gray300}`,
-      background: S.gray50,
-      color: S.gray800,
-      cursor: 'pointer',
-      appearance: 'none',
-      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E")`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'right 9px center',
-      minWidth: 110,
-    }}>
-      {children}
-    </select>
-  );
-}
-
-// ── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [connected, setConnected]     = useState(false);
   const [selectedMetric, setMetric]   = useState('pageView');
@@ -173,8 +107,8 @@ export default function App() {
   const [trendWindow, setTrendWindow] = useState(60);
   const [filters, setFilters]         = useState({});
   const [filterOpen, setFilterOpen]   = useState(null);
+  const [simulating, setSimulating]   = useState(false);
   const [, forceRender]               = useState(0);
-  const [simulating, setSimulating] = useState(false);
 
   const eventsRef = useRef([]);
 
@@ -189,46 +123,58 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-  let es;
-  let retryTimeout;
-  let retryDelay = 3000;
+    let es;
+    let retryTimeout;
+    let retryDelay = 3000;
 
-  function connect() {
-    es = new EventSource(`${API}/events/stream`);
-    es.onopen = () => {
-      setConnected(true);
-      retryDelay = 3000; // reset delay on successful connection
-    };
-    es.onerror = () => {
-      setConnected(false);
-      es.close();
-      retryTimeout = setTimeout(() => {
-        retryDelay = Math.min(retryDelay * 2, 30000); // backoff up to 30s
-        connect();
-      }, retryDelay);
-    };
-    es.onmessage = (e) => {
-      const msg = JSON.parse(e.data);
-      if (msg.type === 'history') ingestEvents(msg.events);
-      else ingestEvents([msg]);
-    };
-  }
+    function connect() {
+      es = new EventSource(`${API}/events/stream`);
+      es.onopen = () => {
+        setConnected(true);
+        retryDelay = 3000;
+      };
+      es.onerror = () => {
+        setConnected(false);
+        es.close();
+        retryTimeout = setTimeout(() => {
+          retryDelay = Math.min(retryDelay * 2, 30000);
+          connect();
+        }, retryDelay);
+      };
+      es.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        if (msg.type === 'history') ingestEvents(msg.events);
+        else ingestEvents([msg]);
+      };
+    }
 
-  connect();
+    connect();
+    return () => { clearTimeout(retryTimeout); es?.close(); };
+  }, [ingestEvents]);
 
-  return () => {
-    clearTimeout(retryTimeout);
-    es?.close();
-  };
-}, [ingestEvents]);
+  useEffect(() => {
+    fetch(`${API}/simulate/status`)
+      .then(r => r.json())
+      .then(d => setSimulating(d.running))
+      .catch(() => {});
 
-  // Check simulation status on load  ← add here
-    useEffect(() => {
+    const id = setInterval(() => {
       fetch(`${API}/simulate/status`)
         .then(r => r.json())
         .then(d => setSimulating(d.running))
         .catch(() => {});
-    }, []);
+    }, 30_000);
+    return () => clearInterval(id);
+  }, []);
+
+  async function startSim() {
+    await fetch(`${API}/simulate/start`, { method: 'POST' });
+    setSimulating(true);
+  }
+  async function stopSim() {
+    await fetch(`${API}/simulate/stop`, { method: 'POST' });
+    setSimulating(false);
+  }
 
   const dimValues = useMemo(() => {
     const map = {};
@@ -274,9 +220,9 @@ export default function App() {
     return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
   }, [filteredEvents, selectedDim, selectedMetric]);
 
-  const dimMax       = dimEntries[0]?.[1] || 1;
-  const metric       = METRICS.find(m => m.key === selectedMetric);
-  const metricColor  = metric?.color || S.blue600;
+  const dimMax = dimEntries[0]?.[1] || 1;
+  const metric = METRICS.find(m => m.key === selectedMetric);
+  const metricColor = metric?.color || S.blue;
   const activeFilterCount = Object.values(filters).reduce((n, s) => n + s.size, 0);
 
   function toggleFilterValue(dimKey, value) {
@@ -288,194 +234,164 @@ export default function App() {
       return next;
     });
   }
-
   function clearFilters() { setFilters({}); }
 
-    async function startSim() {
-    await fetch(`${API}/simulate/start`, { method: 'POST' });
-    setSimulating(true);
-  }
-
-  async function stopSim() {
-    await fetch(`${API}/simulate/stop`, { method: 'POST' });
-    setSimulating(false);
-  }
+  const inputStyle = {
+    fontSize: 12,
+    padding: '4px 22px 4px 9px',
+    borderRadius: 6,
+    border: `0.5px solid ${S.border2}`,
+    background: S.bg2,
+    color: S.textSecondary,
+    appearance: 'none',
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 7px center',
+    cursor: 'pointer',
+  };
 
   return (
-    <div style={{ fontFamily: S.fontSans, background: S.gray100, minHeight: '100vh', color: S.gray900 }}>
+    <div style={{ fontFamily: S.fontSans, background: S.bg2, minHeight: '100vh', color: S.textPrimary }}>
 
-      {/* ── Top navigation bar ── */}
+      {/* Top navigation bar */}
       <div style={{
-        background: `#f5f5f5`,
+        background: S.bg0,
         height: 48,
         display: 'flex',
         alignItems: 'center',
-        padding: `0 ${S.sp300}`,
-        gap: S.sp200,
-        borderBottom: `1px solid #000`
+        padding: '0 20px',
+        gap: 10,
+        borderBottom: `0.5px solid ${S.border1}`,
       }}>
-        {/* Adobe logo mark */}
-        <img
-          src="https://cdn.experience.adobe.net/assets/HeroIcons.6620f5dc.svg#AdobeExperienceCloud"
-          alt="Adobe Experience Cloud"
-          style={{ height: 28, width: 'auto' }}
-        />
-        <div style={{ width: 1, height: 20, background: '#444' }} />
-        <span style={{ color: 'black', fontSize: S.fontSize100, fontWeight: S.fontWeightMedium, letterSpacing: '0.01em' }}>
-          Adobe CX Enterprise
-        </span>
+        <svg width="20" height="16" viewBox="0 0 22 18" fill="none" aria-label="Adobe">
+          <path d="M13.2 0H22v18L13.2 0Z" fill={S.adobeRed}/>
+          <path d="M8.8 0H0v18L8.8 0Z" fill={S.adobeRed}/>
+          <path d="M11 6.6L16.5 18h-3.6l-1.6-3.8H8.6L11 6.6Z" fill={S.adobeRed}/>
+        </svg>
+        <div style={{ width: 1, height: 18, background: '#333' }} />
+        <span style={{ fontSize: 13, fontWeight: 500, color: S.textPrimary }}>Experience Platform</span>
         <div style={{ flex: 1 }} />
-        {/* Live indicator */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button
-          onClick={simulating ? stopSim : startSim}
-          style={{
-            fontSize: 13,
-            fontWeight: 500,
-            padding: '6px 14px',
-            borderRadius: 16,
-            cursor: 'pointer',
-            border: 'none',
-            background: simulating ? S.red500 : S.blue600,
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            transition: 'background 0.15s',
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button onClick={simulating ? stopSim : startSim} style={{
+            fontSize: 12, fontWeight: 500,
+            padding: '5px 12px', borderRadius: 12, cursor: 'pointer',
+            border: `0.5px solid ${simulating ? '#4a3570' : S.purple500}`,
+            background: simulating ? S.purple50 : S.purple500,
+            color: simulating ? S.purple600 : '#fff',
+            display: 'flex', alignItems: 'center', gap: 5,
+            fontFamily: S.fontSans,
           }}>
-          <span style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: '#fff',
-            animation: simulating ? 'pulse 1s infinite' : 'none',
-          }} />
-          {simulating ? 'Stop simulation' : 'Simulate traffic'}
-        </button>
-
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6, fontSize: 13,
-          padding: '4px 10px', borderRadius: 20,
-          background: connected ? '#E1F5EE' : '#FEE2E2',
-          color: connected ? '#0F6E56' : '#991B1B',
-        }}>
-          <span style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: connected ? S.green500 : S.red500,
-            animation: connected ? 'pulse 1.5s infinite' : 'none',
-          }} />
-          {connected ? 'Live' : 'Disconnected'}
-        </div>
-      </div>
-        
-      </div>
-
-      {/* ── Page header ── */}
-      <div style={{
-        background: S.gray50,
-        borderBottom: `1px solid ${S.gray200}`,
-        padding: `${S.sp300} ${S.sp400}`,
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-      }}>
-        <div>
-          <div style={{ fontSize: S.fontSize75, color: S.gray600, marginBottom: 4, letterSpacing: '0.04em', textTransform: 'uppercase', fontWeight: S.fontWeightBold }}>
-            Analytics
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: simulating ? S.purple600 : '#fff',
+              animation: simulating ? 'pulse 1s infinite' : 'none',
+            }} />
+            {simulating ? 'Stop simulation' : 'Simulate traffic'}
+          </button>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 5, fontSize: 12,
+            padding: '4px 10px', borderRadius: 12,
+            background: connected ? '#0d2e1f' : '#2e0d0d',
+            color: connected ? '#33ab84' : '#e24b4a',
+            border: `0.5px solid ${connected ? '#1a5c3a' : '#5c1a1a'}`,
+          }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: connected ? '#33ab84' : '#e24b4a',
+              animation: connected ? 'pulse 1.5s infinite' : 'none',
+            }} />
+            {connected ? 'Live' : 'Disconnected'}
           </div>
-          <h1 style={{ fontSize: S.fontSize700, fontWeight: S.fontWeightBold, margin: 0, color: S.gray900, lineHeight: 1.2 }}>
-            Event Analytics
-          </h1>
-          <p style={{ fontSize: S.fontSize100, color: S.gray600, margin: '4px 0 0' }}>
-            Real-time event forwarding dashboard
-          </p>
         </div>
       </div>
 
-      {/* ── Main content ── */}
-      <div style={{ padding: `${S.sp300} ${S.sp400}`, maxWidth: 1280, margin: '0 auto' }}>
+      {/* Page header */}
+      <div style={{
+        background: S.bg1,
+        borderBottom: `0.5px solid ${S.border1}`,
+        padding: '16px 24px',
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          Analytics
+        </div>
+        <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0, color: S.textPrimary }}>Event Analytics</h1>
+        <p style={{ fontSize: 13, color: S.textMuted, margin: '3px 0 0' }}>Real-time event forwarding dashboard</p>
+      </div>
+
+      {/* Main content */}
+      <div style={{ padding: '20px 24px', maxWidth: 1280, margin: '0 auto' }}>
 
         {/* Metric cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: S.sp200, marginBottom: S.sp300 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: 10, marginBottom: 14 }}>
           {METRICS.map(m => (
             <button key={m.key} onClick={() => setMetric(m.key)} style={{
-              textAlign: 'left',
-              padding: S.sp300,
-              borderRadius: S.radius100,
-              cursor: 'pointer',
-              background: S.gray50,
-              border: selectedMetric === m.key
-                ? `2px solid ${m.color}`
-                : `1px solid ${S.gray200}`,
-              transition: 'border-color 0.12s, box-shadow 0.12s',
-              boxShadow: selectedMetric === m.key ? `0 0 0 1px ${m.color}22` : 'none',
+              textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
+              background: selectedMetric === m.key ? m.bg : S.bg3,
+              border: selectedMetric === m.key ? `0.5px solid ${m.color}66` : `0.5px solid ${S.border2}`,
+              fontFamily: S.fontSans,
+              transition: 'all 0.12s',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: S.sp150 }}>
-                <span style={{ fontSize: S.fontSize75, fontWeight: S.fontWeightBold, color: S.gray600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {m.label}
-                </span>
-                <span style={{
-                  width: 8, height: 8, borderRadius: '50%',
-                  background: selectedMetric === m.key ? m.color : S.gray300,
-                }} />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</span>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: selectedMetric === m.key ? m.color : S.border2 }} />
               </div>
-              <div style={{ fontSize: 32, fontWeight: S.fontWeightBold, color: selectedMetric === m.key ? m.color : S.gray900, lineHeight: 1 }}>
+              <div style={{ fontSize: 28, fontWeight: 500, color: selectedMetric === m.key ? m.color : S.textPrimary, lineHeight: 1 }}>
                 {(totals[m.key] || 0).toLocaleString()}
               </div>
-              {activeFilterCount > 0 && (
-                <div style={{ fontSize: S.fontSize75, color: S.gray500, marginTop: 6 }}>filtered</div>
-              )}
+              {activeFilterCount > 0 && <div style={{ fontSize: 11, color: S.textMuted, marginTop: 5 }}>filtered</div>}
             </button>
           ))}
         </div>
 
         {/* Filter bar */}
-        <Panel style={{ marginBottom: S.sp300, padding: `${S.sp150} ${S.sp200}` }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: S.sp100, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: S.fontSize75, fontWeight: S.fontWeightBold, color: S.gray600, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 4 }}>
-              Filters
-            </span>
-            <div style={{ width: 1, height: 16, background: S.gray300 }} />
+        <Panel style={{ marginBottom: 14, padding: '10px 14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 4 }}>Filters</span>
+            <div style={{ width: 0.5, height: 14, background: S.border2 }} />
 
             {DIMS.map(d => {
               const active = filters[d.key]?.size > 0;
               const isOpen = filterOpen === d.key;
               return (
                 <div key={d.key} style={{ position: 'relative' }}>
-                  <ActionButton active={active} onClick={() => setFilterOpen(isOpen ? null : d.key)}>
+                  <button onClick={() => setFilterOpen(isOpen ? null : d.key)} style={{
+                    fontSize: 12, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
+                    background: active ? S.purple50 : 'transparent',
+                    color: active ? S.purple600 : S.textSecondary,
+                    border: `0.5px solid ${active ? '#4a3570' : S.border2}`,
+                    fontFamily: S.fontSans,
+                    fontWeight: active ? 500 : 400,
+                  }}>
                     {d.label}{active ? ` (${filters[d.key].size})` : ' +'}
-                  </ActionButton>
+                  </button>
 
                   {isOpen && (
                     <div style={{
                       position: 'absolute', top: 'calc(100% + 4px)', left: 0, zIndex: 100,
-                      background: S.gray50,
-                      border: `1px solid ${S.gray200}`,
-                      borderRadius: S.radius100,
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                      minWidth: 220, maxHeight: 280,
-                      overflowY: 'auto', padding: '6px 0',
+                      background: S.bg3, border: `0.5px solid ${S.border2}`,
+                      borderRadius: 8, boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                      minWidth: 220, maxHeight: 260, overflowY: 'auto', padding: '6px 0',
                     }}>
                       {[...dimValues[d.key]].sort().map(val => {
                         const checked = filters[d.key]?.has(val);
                         return (
                           <label key={val} style={{
                             display: 'flex', alignItems: 'center', gap: 10,
-                            padding: '6px 14px', cursor: 'pointer',
-                            fontSize: S.fontSize100,
-                            background: checked ? '#e8f3ff' : 'transparent',
+                            padding: '6px 14px', cursor: 'pointer', fontSize: 13,
+                            background: checked ? S.purple50 : 'transparent',
+                            color: checked ? S.purple600 : S.textSecondary,
                           }}
-                            onMouseEnter={e => { if (!checked) e.currentTarget.style.background = S.gray100; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = checked ? '#e8f3ff' : 'transparent'; }}>
+                            onMouseEnter={e => { if (!checked) e.currentTarget.style.background = S.bg4; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = checked ? S.purple50 : 'transparent'; }}>
                             <input type="checkbox" checked={!!checked}
                               onChange={() => toggleFilterValue(d.key, val)}
-                              style={{ accentColor: S.blue600, width: 14, height: 14 }} />
-                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170, color: S.gray800 }} title={val}>
-                              {val}
-                            </span>
+                              style={{ accentColor: S.purple500 }} />
+                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }} title={val}>{val}</span>
                           </label>
                         );
                       })}
                       {dimValues[d.key].size === 0 && (
-                        <div style={{ padding: '10px 14px', fontSize: S.fontSize75, color: S.gray500 }}>No values yet</div>
+                        <div style={{ padding: '10px 14px', fontSize: 12, color: S.textMuted }}>No values yet</div>
                       )}
                     </div>
                   )}
@@ -485,32 +401,29 @@ export default function App() {
 
             {activeFilterCount > 0 && (
               <button onClick={clearFilters} style={{
-                fontSize: S.fontSize75, padding: '4px 10px', borderRadius: 16, cursor: 'pointer',
-                background: 'transparent', color: S.gray600, border: `1px solid ${S.gray300}`,
-              }}>
-                Clear all
-              </button>
+                fontSize: 12, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
+                background: 'transparent', color: S.textMuted, border: `0.5px solid ${S.border2}`,
+                fontFamily: S.fontSans,
+              }}>Clear all</button>
             )}
           </div>
 
-          {/* Active filter pills */}
           {activeFilterCount > 0 && (
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: S.sp100, paddingTop: S.sp100, borderTop: `1px solid ${S.gray200}` }}>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8, paddingTop: 8, borderTop: `0.5px solid ${S.border1}` }}>
               {Object.entries(filters).flatMap(([dimKey, values]) => {
                 const dimLabel = DIMS.find(d => d.key === dimKey)?.label;
                 return [...values].map(val => (
                   <span key={`${dimKey}:${val}`} style={{
                     display: 'inline-flex', alignItems: 'center', gap: 4,
-                    fontSize: S.fontSize75, padding: '3px 10px',
-                    borderRadius: 16,
-                    background: '#e8f3ff', color: S.blue700,
-                    border: `1px solid ${S.blue400}`,
-                    fontWeight: S.fontWeightMedium,
+                    fontSize: 11, padding: '3px 10px', borderRadius: 12,
+                    background: S.purple50, color: S.purple600,
+                    border: `0.5px solid #4a3570`, fontWeight: 500,
                   }}>
                     {dimLabel}: {val}
                     <button onClick={() => toggleFilterValue(dimKey, val)} style={{
                       background: 'none', border: 'none', cursor: 'pointer',
-                      color: S.blue700, padding: 0, lineHeight: 1, fontSize: 15, marginLeft: 2,
+                      color: '#666', padding: 0, lineHeight: 1, fontSize: 14, marginLeft: 2,
+                      fontFamily: S.fontSans,
                     }}>×</button>
                   </span>
                 ));
@@ -519,98 +432,97 @@ export default function App() {
           )}
         </Panel>
 
-        {/* Click outside closes dropdown */}
-        {filterOpen && (
-          <div onClick={() => setFilterOpen(null)} style={{ position: 'fixed', inset: 0, zIndex: 99 }} />
-        )}
+        {filterOpen && <div onClick={() => setFilterOpen(null)} style={{ position: 'fixed', inset: 0, zIndex: 99 }} />}
 
         {/* Trend chart */}
-        <Panel style={{ marginBottom: S.sp300 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: S.sp200 }}>
+        <Panel style={{ marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div>
               <SectionLabel>Trend</SectionLabel>
-              <div style={{ fontSize: S.fontSize300, fontWeight: S.fontWeightBold, color: S.gray900, lineHeight: 1 }}>
+              <div style={{ fontSize: 16, fontWeight: 500, color: S.textPrimary, lineHeight: 1 }}>
                 {metric?.label}
                 {activeFilterCount > 0 && (
-                  <span style={{ fontSize: S.fontSize75, color: S.blue600, marginLeft: 8, fontWeight: S.fontWeightRegular }}>
+                  <span style={{ fontSize: 11, color: S.purple500, marginLeft: 8, fontWeight: 400 }}>
                     {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} applied
                   </span>
                 )}
               </div>
             </div>
-            <SpectrumSelect value={trendWindow} onChange={e => setTrendWindow(+e.target.value)}>
+            <select value={trendWindow} onChange={e => setTrendWindow(+e.target.value)} style={inputStyle}>
               <option value={5}>Last 5 min</option>
               <option value={15}>Last 15 min</option>
               <option value={30}>Last 30 min</option>
               <option value={60}>Last 60 min</option>
               <option value={120}>Last 2 hrs</option>
-            </SpectrumSelect>
+            </select>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <LineChart data={trendData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke={S.gray200} />
-              <XAxis dataKey="time" tick={{ fontSize: 11, fill: S.gray500, fontFamily: S.fontSans }}
-                interval={Math.floor(trendWindow / 6)} axisLine={{ stroke: S.gray300 }} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: S.gray500, fontFamily: S.fontSans }}
+              <CartesianGrid strokeDasharray="3 3" stroke={S.border1} />
+              <XAxis dataKey="time" tick={{ fontSize: 11, fill: S.textMuted, fontFamily: S.fontSans }}
+                interval={Math.floor(trendWindow / 6)} axisLine={{ stroke: S.border2 }} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: S.textMuted, fontFamily: S.fontSans }}
                 width={38} allowDecimals={false} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{
-                  fontSize: 13, borderRadius: 6,
-                  border: `1px solid ${S.gray200}`,
-                  background: S.gray50,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  fontSize: 12, borderRadius: 6,
+                  border: `0.5px solid ${S.border2}`,
+                  background: S.bg3,
+                  color: S.textPrimary,
                   fontFamily: S.fontSans,
                 }}
-                labelStyle={{ color: S.gray600, fontWeight: 600 }}
+                labelStyle={{ color: S.textSecondary }}
               />
               <Line type="monotone" dataKey="value"
                 name={metric?.label}
-                stroke={metricColor} strokeWidth={2.5}
-                dot={false} isAnimationActive={false}
-              />
+                stroke={metricColor} strokeWidth={2}
+                dot={false} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </Panel>
 
         {/* Bottom row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: S.sp300 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
 
           {/* Top 10 dimension table */}
           <Panel>
             <SectionLabel>Top 10 by dimension</SectionLabel>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: S.sp200 }}>
+            <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 10 }}>
               {DIMS.map(d => (
-                <ActionButton key={d.key} active={selectedDim === d.key} onClick={() => setDim(d.key)}>
+                <button key={d.key} onClick={() => setDim(d.key)} style={{
+                  fontSize: 11, padding: '3px 8px', borderRadius: 12, cursor: 'pointer',
+                  background: selectedDim === d.key ? S.purple50 : 'transparent',
+                  color: selectedDim === d.key ? S.purple600 : S.textMuted,
+                  border: `0.5px solid ${selectedDim === d.key ? '#4a3570' : S.border2}`,
+                  fontWeight: selectedDim === d.key ? 500 : 400,
+                  fontFamily: S.fontSans,
+                }}>
                   {d.label}
-                </ActionButton>
+                </button>
               ))}
             </div>
-            <table style={{ width: '100%', fontSize: S.fontSize100, borderCollapse: 'collapse' }}>
+            <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: `2px solid ${S.gray200}` }}>
-                  <th style={{ textAlign: 'left', color: S.gray600, fontWeight: S.fontWeightBold, fontSize: S.fontSize75, padding: '6px 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
-                  <th style={{ textAlign: 'right', color: S.gray600, fontWeight: S.fontWeightBold, fontSize: S.fontSize75, padding: '6px 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Count</th>
+                <tr style={{ borderBottom: `1px solid ${S.border2}` }}>
+                  <th style={{ textAlign: 'left', color: S.textMuted, fontWeight: 600, fontSize: 11, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
+                  <th style={{ textAlign: 'right', color: S.textMuted, fontWeight: 600, fontSize: 11, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Count</th>
                 </tr>
               </thead>
               <tbody>
                 {dimEntries.length === 0 && (
-                  <tr><td colSpan={2} style={{ color: S.gray400, fontSize: S.fontSize75, padding: '1.5rem 8px', textAlign: 'center' }}>
+                  <tr><td colSpan={2} style={{ color: S.textMuted, fontSize: 11, padding: '1.5rem 6px', textAlign: 'center' }}>
                     {activeFilterCount > 0 ? 'No data for current filters' : 'Waiting for events…'}
                   </td></tr>
                 )}
                 {dimEntries.map(([k, v], i) => (
-                  <tr key={k} style={{ borderBottom: `1px solid ${S.gray100}`, background: i % 2 === 0 ? 'transparent' : S.gray75 }}>
-                    <td style={{ padding: '7px 8px', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: S.gray800 }} title={k}>
+                  <tr key={k} style={{ borderBottom: `0.5px solid ${S.border1}`, background: i % 2 === 0 ? 'transparent' : S.bg4 }}>
+                    <td style={{ padding: '6px', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: S.textSecondary }} title={k}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <div style={{
-                          width: Math.max(3, Math.round(v / dimMax * 56)),
-                          height: 3, borderRadius: 2,
-                          background: metricColor, flexShrink: 0,
-                        }} />
+                        <div style={{ width: Math.max(3, Math.round(v / dimMax * 48)), height: 3, borderRadius: 2, background: metricColor, flexShrink: 0 }} />
                         {k}
                       </div>
                     </td>
-                    <td style={{ padding: '7px 8px', textAlign: 'right', fontWeight: S.fontWeightBold, color: S.gray900, fontVariantNumeric: 'tabular-nums' }}>
+                    <td style={{ padding: '6px', textAlign: 'right', fontWeight: 500, color: S.textPrimary, fontVariantNumeric: 'tabular-nums' }}>
                       {v.toLocaleString()}
                     </td>
                   </tr>
@@ -622,39 +534,36 @@ export default function App() {
           {/* Live event feed */}
           <Panel>
             <SectionLabel>Live event feed</SectionLabel>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 360, overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 340, overflowY: 'auto', marginTop: 8 }}>
               {filteredEvents.length === 0 && (
-                <div style={{ color: S.gray400, fontSize: S.fontSize75, textAlign: 'center', padding: '2rem 0' }}>
+                <div style={{ color: S.textMuted, fontSize: 11, textAlign: 'center', padding: '2rem 0' }}>
                   {activeFilterCount > 0 ? 'No events match current filters' : 'Waiting for events…'}
                 </div>
               )}
               {filteredEvents.slice(0, 20).map(evt => {
                 const firedMetrics = METRICS.filter(m => evt[m.key]);
-                const accent = firedMetrics[0]?.color || S.gray400;
+                const accent = firedMetrics[0]?.color || S.border2;
                 return (
                   <div key={evt.id} style={{
-                    padding: '8px 12px',
-                    background: S.gray75,
-                    borderRadius: S.radius75,
-                    borderLeft: `3px solid ${accent}`,
-                    fontSize: S.fontSize75,
+                    padding: '7px 10px', background: S.bg2,
+                    borderRadius: 6, borderLeft: `2px solid ${accent}`,
                   }}>
-                    <div style={{ fontWeight: S.fontWeightBold, color: S.gray900, marginBottom: 3, fontSize: S.fontSize100 }}>
+                    <div style={{ fontWeight: 500, color: S.textPrimary, marginBottom: 3, fontSize: 13 }}>
                       {evt.pageName || evt.pageUrl || 'Unknown page'}
                     </div>
-                    <div style={{ color: S.gray600, display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div style={{ color: S.textMuted, display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', fontSize: 11 }}>
                       {firedMetrics.map(m => (
                         <span key={m.key} style={{
-                          color: m.color, fontWeight: S.fontWeightMedium,
-                          background: m.bg, padding: '1px 6px', borderRadius: 10, fontSize: 10,
+                          color: m.color, fontWeight: 500,
+                          background: m.bg, padding: '1px 6px', borderRadius: 8, fontSize: 10,
                         }}>
                           {m.label}
                         </span>
                       ))}
                       {evt.deviceType && <span>{evt.deviceType}</span>}
                       {evt.country    && <span>{evt.country}</span>}
-                      {evt.trackingCode && <span style={{ color: S.purple500 }}>{evt.trackingCode}</span>}
-                      <span style={{ marginLeft: 'auto', color: S.gray500, fontVariantNumeric: 'tabular-nums' }}>
+                      {evt.trackingCode && <span style={{ color: S.purple600 }}>{evt.trackingCode}</span>}
+                      <span style={{ marginLeft: 'auto', fontVariantNumeric: 'tabular-nums', color: S.textMuted }}>
                         {new Date(evt.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
@@ -667,15 +576,14 @@ export default function App() {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
         * { box-sizing: border-box; }
-        body { margin: 0; background: ${S.gray100}; }
+        body { margin: 0; background: ${S.bg2}; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-        button { font-family: inherit; outline: none; }
-        button:focus-visible { box-shadow: 0 0 0 3px ${S.blue400}66; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: ${S.gray100}; }
-        ::-webkit-scrollbar-thumb { background: ${S.gray300}; border-radius: 3px; }
+        button { outline: none; }
+        button:focus-visible { box-shadow: 0 0 0 3px ${S.purple500}66; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: ${S.bg2}; }
+        ::-webkit-scrollbar-thumb { background: ${S.border2}; border-radius: 3px; }
       `}</style>
     </div>
   );
