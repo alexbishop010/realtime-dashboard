@@ -323,30 +323,6 @@ export default function App() {
       <div style={{ background: S.contentGradient, minHeight: 'calc(100vh - 112px)' }}>
         <div style={{ padding: '20px 24px', maxWidth: 1280, margin: '0 auto' }}>
 
-          {/* Metric cards */}
-          <div className="metric-grid">
-            {METRICS.map(m => (
-              <button key={m.key} onClick={() => setMetric(m.key)} style={{
-                textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
-                background: selectedMetric === m.key ? '#000000' : '#1b1b1b',
-                border: selectedMetric === m.key ? `1px solid ${m.color}` : `0.5px solid rgba(255,255,255,0.1)`,
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                fontFamily: S.fontSans,
-                transition: 'all 0.12s',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</span>
-                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: selectedMetric === m.key ? m.color : 'rgba(255,255,255,0.15)' }} />
-                </div>
-                <div style={{ fontSize: 28, fontWeight: 500, color: selectedMetric === m.key ? m.color : S.textPrimary, lineHeight: 1 }}>
-                  {(totals[m.key] || 0).toLocaleString()}
-                </div>
-                {activeFilterCount > 0 && <div style={{ fontSize: 11, color: S.textMuted, marginTop: 5 }}>filtered</div>}
-              </button>
-            ))}
-          </div>
-
           {/* Filter bar */}
           <Panel style={{ marginBottom: 14, padding: '10px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -439,6 +415,30 @@ export default function App() {
               </div>
             )}
           </Panel>
+
+          {/* Metric cards */}
+          <div className="metric-grid">
+            {METRICS.map(m => (
+              <button key={m.key} onClick={() => setMetric(m.key)} style={{
+                textAlign: 'left', padding: '12px 14px', borderRadius: 8, cursor: 'pointer',
+                background: selectedMetric === m.key ? '#000000' : '#1b1b1b',
+                border: selectedMetric === m.key ? `1px solid ${m.color}` : `0.5px solid rgba(255,255,255,0.1)`,
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                fontFamily: S.fontSans,
+                transition: 'all 0.12s',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</span>
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: selectedMetric === m.key ? m.color : 'rgba(255,255,255,0.15)' }} />
+                </div>
+                <div style={{ fontSize: 28, fontWeight: 500, color: selectedMetric === m.key ? m.color : S.textPrimary, lineHeight: 1 }}>
+                  {(totals[m.key] || 0).toLocaleString()}
+                </div>
+                {activeFilterCount > 0 && <div style={{ fontSize: 11, color: S.textMuted, marginTop: 5 }}>filtered</div>}
+              </button>
+            ))}
+          </div>
 
           {filterOpen && <div onClick={() => setFilterOpen(null)} style={{ position: 'fixed', inset: 0, zIndex: 99 }} />}
 
