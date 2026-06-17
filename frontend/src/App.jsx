@@ -429,13 +429,13 @@ export default function App() {
                 transition: 'all 0.12s',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</span>
                   <span style={{ width: 7, height: 7, borderRadius: '50%', background: selectedMetric === m.key ? m.color : 'rgba(255,255,255,0.15)' }} />
                 </div>
                 <div style={{ fontSize: 28, fontWeight: 500, color: selectedMetric === m.key ? m.color : S.textPrimary, lineHeight: 1 }}>
                   {(totals[m.key] || 0).toLocaleString()}
                 </div>
-                {activeFilterCount > 0 && <div style={{ fontSize: 11, color: S.textMuted, marginTop: 5 }}>filtered</div>}
+                {activeFilterCount > 0 && <div style={{ fontSize: 14, color: S.textMuted, marginTop: 5 }}>filtered</div>}
               </button>
             ))}
           </div>
@@ -450,7 +450,7 @@ export default function App() {
                 <div style={{ fontSize: 16, fontWeight: 500, color: S.textPrimary, lineHeight: 1 }}>
                   {metric?.label}
                   {activeFilterCount > 0 && (
-                    <span style={{ fontSize: 11, color: S.purple600, marginLeft: 8, fontWeight: 400 }}>
+                    <span style={{ fontSize: 14, color: S.purple600, marginLeft: 8, fontWeight: 400 }}>
                       {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} applied
                     </span>
                   )}
@@ -467,9 +467,9 @@ export default function App() {
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={trendData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="time" tick={{ fontSize: 11, fill: S.textMuted, fontFamily: S.fontSans }}
+                <XAxis dataKey="time" tick={{ fontSize: 14, fill: S.textMuted, fontFamily: S.fontSans }}
                   interval={Math.floor(trendWindow / 6)} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: S.textMuted, fontFamily: S.fontSans }}
+                <YAxis tick={{ fontSize: 14, fill: S.textMuted, fontFamily: S.fontSans }}
                   width={38} allowDecimals={false} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{
