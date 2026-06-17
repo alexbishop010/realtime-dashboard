@@ -30,7 +30,7 @@ const S = {
 
   adobeRed: '#fa0f00',
 
-  fontSans: 'system-ui, -apple-system, sans-serif',
+  fontSans: '"Adobe Clean", "Source Sans Pro", ui-san-serif, system-ui, sans-serif',
 
   contentGradient: 'linear-gradient(135deg, #1a0a4e 0%, #3b1a8a 25%, #6b21a8 50%, #0e7490 100%)',
 };
@@ -522,7 +522,7 @@ export default function App() {
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${S.border2}` }}>
                     <th style={{ textAlign: 'left', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
-                    <th style={{ textAlign: 'right', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Count</th>
+                    <th style={{ textAlign: 'right', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{metric?.label}</th>
                   </tr>
                 </thead>
                 <tbody>
