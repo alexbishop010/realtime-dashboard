@@ -308,7 +308,6 @@ export default function App() {
         <Panel style={{ marginBottom: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 600, color: S.textPrimary, marginBottom: 2 }}>Traffic simulation</div>
-            <div style={{ fontSize: 12, color: S.textMuted }}>Generate synthetic events to test the dashboard</div>
           </div>
           <button onClick={simulating ? stopSim : startSim} style={{
             fontSize: 13, fontWeight: 500,
