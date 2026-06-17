@@ -467,9 +467,8 @@ export default function App() {
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={trendData} margin={{ top: 4, right: 8, left: 0, bottom: 16 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="time" tick={{ fontSize: 14, fill: S.textMuted, fontFamily: S.fontSans }}
+                <XAxis dataKey="time" tick={{ fontSize: 14, fill: S.textMuted, fontFamily: S.fontSans, dy: 10 }}
                   interval={Math.floor(trendWindow / 6)} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} 
-                  height={40}
                   />
                 <YAxis tick={{ fontSize: 14, fill: S.textMuted, fontFamily: S.fontSans }}
                   width={38} allowDecimals={false} axisLine={false} tickLine={false} />
