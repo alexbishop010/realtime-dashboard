@@ -214,15 +214,17 @@ export default function App() {
       return t;
     }, [filteredEvents, trendWindow]);
 
-  const dimEntries = useMemo(() => {
-    const counts = {};
-    filteredEvents.forEach(evt => {
-      const v = evt[selectedDim];
-      //if (v) counts[v] = (counts[v] || 0) + (evt[selectedMetric] || 1);
-      if (v && evt[selectedMetric]) counts[v] = (counts[v] || 0) + evt[selectedMetric];
-    });
-    return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
-  }, [filteredEvents, selectedDim, selectedMetric]);
+    const dimEntries = useMemo(() => {
+      const cutoff = new Date(Date.now() - trendWindow * 60 * 1000);
+      const counts = {};
+      filteredEvents
+        .filter(evt => new Date(evt.timestamp) >= cutoff)
+        .forEach(evt => {
+          const v = evt[selectedDim];
+          if (v && evt[selectedMetric]) counts[v] = (counts[v] || 0) + evt[selectedMetric];
+        });
+      return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    }, [filteredEvents, selectedDim, selectedMetric, trendWindow]);
 
   const dimMax      = dimEntries[0]?.[1] || 1;
   const metric      = METRICS.find(m => m.key === selectedMetric);
@@ -560,7 +562,10 @@ export default function App() {
                     {activeFilterCount > 0 ? 'No events match current filters' : 'Waiting for events…'}
                   </div>
                 )}
-                {filteredEvents.slice(0, 20).map(evt => {
+                {filteredEvents
+                  .filter(evt => new Date(evt.timestamp) >= new Date(Date.now() - trendWindow * 60 * 1000))
+                  .slice(0, 20)
+                  .map(evt => {
                   const firedMetrics = METRICS.filter(m => evt[m.key]);
                   const accent = firedMetrics[0]?.color || 'rgba(255,255,255,0.2)';
                   return (
