@@ -273,22 +273,6 @@ export default function App() {
         <span style={{ fontSize: 16, fontWeight: 700, color: S.textPrimary }}>CX Enterprise</span>
         <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button onClick={simulating ? stopSim : startSim} style={{
-            fontSize: 13, fontWeight: 500,
-            padding: '5px 12px', borderRadius: 12, cursor: 'pointer',
-            border: `0.5px solid ${simulating ? 'rgba(169,142,255,0.4)' : S.purple500}`,
-            background: simulating ? 'rgba(79,70,229,0.2)' : S.purple500,
-            color: simulating ? S.purple600 : '#fff',
-            display: 'flex', alignItems: 'center', gap: 5,
-            fontFamily: S.fontSans,
-          }}>
-            <span style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: simulating ? S.purple600 : '#fff',
-              animation: simulating ? 'pulse 1s infinite' : 'none',
-            }} />
-            {simulating ? 'Stop simulation' : 'Simulate traffic'}
-          </button>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 5, fontSize: 13,
             padding: '4px 10px', borderRadius: 12,
@@ -313,12 +297,38 @@ export default function App() {
         padding: '16px 24px',
       }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0, color: S.textPrimary }}>Event Analytics</h1>
-        <p style={{ fontSize: 13, color: S.textMuted, margin: '3px 0 0' }}>Real-time event forwarding dashboard</p>
+        <p style={{ fontSize: 16, color: S.textMuted, margin: '3px 0 0' }}>Real-time Event Dashboard</p>
       </div>
 
       {/* Main content with gradient background */}
       <div style={{ background: S.contentGradient, minHeight: 'calc(100vh - 112px)' }}>
         <div style={{ padding: '20px 24px', maxWidth: 1280, margin: '0 auto' }}>
+
+          {/* Simulate traffic */}
+        <Panel style={{ marginBottom: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: S.textPrimary, marginBottom: 2 }}>Traffic simulation</div>
+            <div style={{ fontSize: 12, color: S.textMuted }}>Generate synthetic events to test the dashboard</div>
+          </div>
+          <button onClick={simulating ? stopSim : startSim} style={{
+            fontSize: 13, fontWeight: 500,
+            padding: '8px 16px', borderRadius: 12, cursor: 'pointer',
+            border: `0.5px solid ${simulating ? 'rgba(169,142,255,0.4)' : S.purple500}`,
+            background: simulating ? 'rgba(79,70,229,0.2)' : S.purple500,
+            color: simulating ? S.purple600 : '#fff',
+            display: 'flex', alignItems: 'center', gap: 6,
+            fontFamily: S.fontSans,
+            whiteSpace: 'nowrap',
+          }}>
+            <span style={{
+              width: 7, height: 7, borderRadius: '50%',
+              background: simulating ? S.purple600 : '#fff',
+              animation: simulating ? 'pulse 1s infinite' : 'none',
+            }} />
+            {simulating ? 'Stop simulation' : 'Simulate traffic'}
+          </button>
+        </Panel>
+
 
           {/* Filter bar */}
           <Panel style={{ marginBottom: 14, padding: '10px 14px' }}>
