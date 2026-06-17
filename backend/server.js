@@ -158,7 +158,7 @@ function generateSimEvent() {
   const isCheckout = page.name === 'Checkout';
   const isConfirm  = page.name === 'Order Confirmation';
   const addToCart  = isCart ? 1 : 0;
-  const purchase   = isConfirm ? 1 : (isCheckout && Math.random() < 0.25 ? 1 : 0);
+  const purchase   = isConfirm ? 1 : 0;
 
   return {
     id:        crypto.randomUUID(),
