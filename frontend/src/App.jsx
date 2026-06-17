@@ -270,11 +270,11 @@ export default function App() {
           <path d="M11 6.6L16.5 18h-3.6l-1.6-3.8H8.6L11 6.6Z" fill={S.adobeRed}/>
         </svg>
         <div style={{ width: 1, height: 18, background: '#333' }} />
-        <span style={{ fontSize: 13, fontWeight: 500, color: S.textPrimary }}>Experience Platform</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: S.textPrimary }}>CX Enterprise</span>
         <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={simulating ? stopSim : startSim} style={{
-            fontSize: 12, fontWeight: 500,
+            fontSize: 13, fontWeight: 500,
             padding: '5px 12px', borderRadius: 12, cursor: 'pointer',
             border: `0.5px solid ${simulating ? 'rgba(169,142,255,0.4)' : S.purple500}`,
             background: simulating ? 'rgba(79,70,229,0.2)' : S.purple500,
@@ -290,7 +290,7 @@ export default function App() {
             {simulating ? 'Stop simulation' : 'Simulate traffic'}
           </button>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 5, fontSize: 12,
+            display: 'flex', alignItems: 'center', gap: 5, fontSize: 13,
             padding: '4px 10px', borderRadius: 12,
             background: connected ? 'rgba(29,158,117,0.15)' : 'rgba(226,75,74,0.15)',
             color: connected ? '#33ab84' : '#e24b4a',
