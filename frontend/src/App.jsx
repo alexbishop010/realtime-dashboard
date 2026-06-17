@@ -83,12 +83,12 @@ function Panel({ children, style = {} }) {
 function SectionLabel({ children }) {
   return (
     <div style={{
-      fontSize: 11,
+      fontSize: 16,
       fontWeight: 600,
       color: S.textMuted,
       textTransform: 'uppercase',
       letterSpacing: '0.06em',
-      marginBottom: 4,
+      marginBottom: 10,
     }}>
       {children}
     </div>
