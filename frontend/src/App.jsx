@@ -335,7 +335,7 @@ export default function App() {
                 return (
                   <div key={d.key} style={{ position: 'relative' }}>
                     <button onClick={() => setFilterOpen(isOpen ? null : d.key)} style={{
-                      fontSize: 12, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
+                      fontSize: 14, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
                       background: active ? 'rgba(79,70,229,0.3)' : 'transparent',
                       color: active ? S.purple700 : S.textSecondary,
                       border: `0.5px solid ${active ? 'rgba(169,142,255,0.4)' : S.border2}`,
