@@ -23,10 +23,10 @@ const S = {
   purple600: '#a98eff',
   purple700: '#c4b5fd',
 
-  blue:   '#4f46e5',
+  blue:   '#38bdf8',
   green:  '#1D9E75',
   orange: '#BA7517',
-  purple: '#9d6bf5',
+  purple: '#f472b6',
 
   adobeRed: '#fa0f00',
 
@@ -36,10 +36,10 @@ const S = {
 };
 
 const METRICS = [
-  { key: 'pageView',        label: 'Page Views',    color: S.blue,   bg: 'rgba(79,70,229,0.2)'  },
+  { key: 'pageView',        label: 'Page Views',    color: S.blue,   bg: 'rgba(56,189,248,0.15)'  },
   { key: 'productPageView', label: 'Product Views', color: S.green,  bg: 'rgba(29,158,117,0.2)' },
   { key: 'addToCart',       label: 'Add to Cart',   color: S.orange, bg: 'rgba(186,117,23,0.2)' },
-  { key: 'purchase',        label: 'Purchases',     color: S.purple, bg: 'rgba(157,107,245,0.2)'},
+  { key: 'purchase',        label: 'Purchases',     color: S.purple, bg: 'rgba(244,114,182,0.15)'},
 ];
 
 const DIMS = [
