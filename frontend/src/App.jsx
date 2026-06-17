@@ -510,7 +510,7 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+              <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${S.border2}` }}>
                     <th style={{ textAlign: 'left', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
