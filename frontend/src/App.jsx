@@ -326,7 +326,7 @@ export default function App() {
           {/* Filter bar */}
           <Panel style={{ marginBottom: 14, padding: '10px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 4 }}>Filters</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 4 }}>Filters</span>
               <div style={{ width: 0.5, height: 14, background: S.border2 }} />
 
               {DIMS.map(d => {
@@ -385,7 +385,7 @@ export default function App() {
 
               {activeFilterCount > 0 && (
                 <button onClick={clearFilters} style={{
-                  fontSize: 12, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
+                  fontSize: 14, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
                   background: 'transparent', color: S.textMuted, border: `0.5px solid ${S.border2}`,
                   fontFamily: S.fontSans,
                 }}>Clear all</button>
