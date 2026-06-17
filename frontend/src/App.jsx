@@ -215,7 +215,8 @@ export default function App() {
     const counts = {};
     filteredEvents.forEach(evt => {
       const v = evt[selectedDim];
-      if (v) counts[v] = (counts[v] || 0) + (evt[selectedMetric] || 1);
+      //if (v) counts[v] = (counts[v] || 0) + (evt[selectedMetric] || 1);
+      if (v && evt[selectedMetric]) counts[v] = (counts[v] || 0) + evt[selectedMetric];
     });
     return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
   }, [filteredEvents, selectedDim, selectedMetric]);
