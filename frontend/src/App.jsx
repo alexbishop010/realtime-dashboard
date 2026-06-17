@@ -312,9 +312,6 @@ export default function App() {
         borderBottom: `0.5px solid rgba(255,255,255,0.06)`,
         padding: '16px 24px',
       }}>
-        <div style={{ fontSize: 11, fontWeight: 600, color: S.textMuted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
-          Analytics
-        </div>
         <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0, color: S.textPrimary }}>Event Analytics</h1>
         <p style={{ fontSize: 13, color: S.textMuted, margin: '3px 0 0' }}>Real-time event forwarding dashboard</p>
       </div>
