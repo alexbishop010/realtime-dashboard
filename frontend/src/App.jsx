@@ -202,14 +202,17 @@ export default function App() {
     });
   }, [filteredEvents, selectedMetric, trendWindow, nowBucket]);
 
-  const totals = useMemo(() => {
-    const t = {};
-    METRICS.forEach(m => { t[m.key] = 0; });
-    filteredEvents.forEach(evt => {
-      METRICS.forEach(m => { t[m.key] += evt[m.key] || 0; });
-    });
-    return t;
-  }, [filteredEvents]);
+    const totals = useMemo(() => {
+      const cutoff = new Date(Date.now() - trendWindow * 60 * 1000);
+      const t = {};
+      METRICS.forEach(m => { t[m.key] = 0; });
+      filteredEvents
+        .filter(evt => new Date(evt.timestamp) >= cutoff)
+        .forEach(evt => {
+          METRICS.forEach(m => { t[m.key] += evt[m.key] || 0; });
+        });
+      return t;
+    }, [filteredEvents, trendWindow]);
 
   const dimEntries = useMemo(() => {
     const counts = {};
