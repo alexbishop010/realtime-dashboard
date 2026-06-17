@@ -499,7 +499,7 @@ export default function App() {
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 10 }}>
                 {DIMS.map(d => (
                   <button key={d.key} onClick={() => setDim(d.key)} style={{
-                    fontSize: 11, padding: '3px 8px', borderRadius: 12, cursor: 'pointer',
+                    fontSize: 14, padding: '3px 8px', borderRadius: 12, cursor: 'pointer',
                     background: selectedDim === d.key ? 'rgba(79,70,229,0.3)' : 'transparent',
                     color: selectedDim === d.key ? S.purple700 : S.textMuted,
                     border: `0.5px solid ${selectedDim === d.key ? 'rgba(169,142,255,0.4)' : S.border2}`,
@@ -513,13 +513,13 @@ export default function App() {
               <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${S.border2}` }}>
-                    <th style={{ textAlign: 'left', color: S.textMuted, fontWeight: 600, fontSize: 11, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
-                    <th style={{ textAlign: 'right', color: S.textMuted, fontWeight: 600, fontSize: 11, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Count</th>
+                    <th style={{ textAlign: 'left', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Value</th>
+                    <th style={{ textAlign: 'right', color: S.textMuted, fontWeight: 600, fontSize: 14, padding: '4px 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Count</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dimEntries.length === 0 && (
-                    <tr><td colSpan={2} style={{ color: S.textMuted, fontSize: 11, padding: '1.5rem 6px', textAlign: 'center' }}>
+                    <tr><td colSpan={2} style={{ color: S.textMuted, fontSize: 14, padding: '1.5rem 6px', textAlign: 'center' }}>
                       {activeFilterCount > 0 ? 'No data for current filters' : 'Waiting for events…'}
                     </td></tr>
                   )}
@@ -545,7 +545,7 @@ export default function App() {
               <SectionLabel>Live event feed</SectionLabel>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 340, overflowY: 'auto', marginTop: 8 }}>
                 {filteredEvents.length === 0 && (
-                  <div style={{ color: S.textMuted, fontSize: 11, textAlign: 'center', padding: '2rem 0' }}>
+                  <div style={{ color: S.textMuted, fontSize: 14, textAlign: 'center', padding: '2rem 0' }}>
                     {activeFilterCount > 0 ? 'No events match current filters' : 'Waiting for events…'}
                   </div>
                 )}
@@ -566,7 +566,7 @@ export default function App() {
                         {firedMetrics.map(m => (
                           <span key={m.key} style={{
                             color: m.color, fontWeight: 500,
-                            background: m.bg, padding: '1px 6px', borderRadius: 8, fontSize: 10,
+                            background: m.bg, padding: '1px 6px', borderRadius: 8, fontSize: 13,
                           }}>
                             {m.label}
                           </span>
