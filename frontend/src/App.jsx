@@ -562,7 +562,7 @@ export default function App() {
                       <div style={{ fontWeight: 500, color: S.textPrimary, marginBottom: 3, fontSize: 13 }}>
                         {evt.pageName || evt.pageUrl || 'Unknown page'}
                       </div>
-                      <div style={{ color: S.textMuted, display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', fontSize: 11 }}>
+                      <div style={{ color: S.textMuted, display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', fontSize: 13 }}>
                         {firedMetrics.map(m => (
                           <span key={m.key} style={{
                             color: m.color, fontWeight: 500,
