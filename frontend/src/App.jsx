@@ -481,7 +481,7 @@ export default function App() {
                   width={38} allowDecimals={false} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{
-                    fontSize: 12, borderRadius: 6,
+                    fontSize: 14, borderRadius: 6,
                     border: `0.5px solid ${S.border2}`,
                     background: 'rgba(20,10,40,0.95)',
                     color: S.textPrimary,
